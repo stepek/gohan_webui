@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import _ from 'lodash';
 
 import {deepEquals} from 'react-jsonschema-form/lib/utils';
 
@@ -94,13 +95,40 @@ class ObjectField extends Component {
       readonly
     } = this.props;
     const {definitions, fields, formContext} = this.props.registry;
+    console.log(definitions);
     const {SchemaField, TitleField, DescriptionField} = fields;
-    const schema = retrieveSchema(this.props.schema, definitions);
-    const title = (schema.title === undefined) ? name : schema.title;
+    const baseSchema = retrieveSchema(this.props.schema, definitions);
+    const title = (baseSchema.title === undefined) ? name : baseSchema.title;
+    const {propertiesLogic = {}} = baseSchema;
+
+    const schema = _.cloneDeep(baseSchema);
+    Object.keys(propertiesLogic).forEach(key => {
+      const property = propertiesLogic[key];
+
+      console.log('property', property);
+      console.log('key', key);
+      Object.keys(property).forEach(value => {
+        const actions = property[value];
+        const {hide} = actions;
+
+        console.log('value', value);
+        console.log(actions);
+        console.log(hide);
+        hide.forEach(propertyKey => {
+          if (this.state[key] === value) {
+            delete schema.properties[propertyKey];
+            delete this.state[propertyKey];
+          }
+          console.log(propertyKey, this.state, schema.properties);
+        });
+      });
+    });
     let orderedProperties;
     try {
       const properties = Object.keys(schema.properties);
-      orderedProperties = orderProperties(properties, schema.propertiesOrder || uiSchema['ui:order']);
+      orderedProperties = orderProperties(
+        properties, schema.propertiesOrder.filter(item => properties.includes(item)) || uiSchema['ui:order']
+      );
     } catch (err) {
       return (
         <div>
