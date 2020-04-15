@@ -10,7 +10,9 @@
     "build": "rm -rf ./dist/ && NODE_ENV=production ./node_modules/.bin/webpack --colors --progress --bail",
     "build-dev": "rm -rf ./dist/ && ./node_modules/.bin/webpack -d --colors --display-reasons --progress --bail",
     "dev-server": "rm -rf ./dist/ && ./node_modules/.bin/webpack-dev-server -d --inline --colors --progress",
-    "lint": "./node_modules/.bin/eslint `find ./app/ -name '*.js'`"
+    "lint": "./node_modules/.bin/eslint `find ./app/ -name '*.js'`",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -110,6 +112,8 @@
     "js-yaml": "^3.5.5",
     "spinkit": "^1.2.5",
     "underscore": "^1.8.3",
-    "whatwg-fetch": "^2.0.0"
-  }
+    "whatwg-fetch": "^2.0.0",
+    "snyk": "^1.305.1"
+  },
+  "snyk": true
 }

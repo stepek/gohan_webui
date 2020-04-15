@@ -1,0 +1,14 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.14.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - ace-builds > ace > debug:
+        patched: '2020-04-15T08:21:44.018Z'
+  'npm:ms:20170412':
+    - ace-builds > ace > debug > ms:
+        patched: '2020-04-15T08:21:44.018Z'
+  'npm:node-uuid:20160328':
+    - ace-builds > ace > node-uuid:
+        patched: '2020-04-15T08:21:44.018Z'
